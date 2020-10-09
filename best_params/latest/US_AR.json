@@ -1,7 +1,7 @@
 {
     "country": "US",
-    "current_r": 1.0407979180213127,
-    "date": "2020-10-04",
+    "current_r": 0.9329475454320838,
+    "date": "2020-09-07",
     "first_date": "2020-02-29",
     "fixed_params": [
         [
@@ -205,11 +205,11 @@
     "mean_params": [
         [
             "INITIAL_R_0",
-            1.4282997465951515
+            1.5505407768121888
         ],
         [
             "LOCKDOWN_R_0",
-            0.9716100214032233
+            0.9859157475202824
         ],
         [
             "INFLECTION_DAY",
@@ -217,61 +217,7 @@
         ],
         [
             "RATE_OF_INFLECTION",
-            0.29517484182963005
-        ],
-        [
-            "LOCKDOWN_FATIGUE",
-            1.0000000000000002
-        ],
-        [
-            "DAILY_IMPORTS",
-            26.54872226953856
-        ],
-        [
-            "MORTALITY_RATE",
-            0.0085
-        ],
-        [
-            "REOPEN_DATE",
-            "2020-05-11"
-        ],
-        [
-            "REOPEN_SHIFT_DAYS",
-            0.386499629102169
-        ],
-        [
-            "REOPEN_R",
-            1.3041872293387122
-        ],
-        [
-            "REOPEN_INFLECTION",
-            0.24751511742682056
-        ],
-        [
-            "POST_REOPEN_EQUILIBRIUM_R",
-            1.0255766656058127
-        ],
-        [
-            "FALL_R_MULTIPLIER",
-            1.002205530578982
-        ]
-    ],
-    "median_params": [
-        [
-            "INITIAL_R_0",
-            1.4
-        ],
-        [
-            "LOCKDOWN_R_0",
-            0.9500000000000001
-        ],
-        [
-            "INFLECTION_DAY",
-            "2020-04-04"
-        ],
-        [
-            "RATE_OF_INFLECTION",
-            0.2932725783446166
+            0.30172901146018233
         ],
         [
             "LOCKDOWN_FATIGUE",
@@ -279,11 +225,65 @@
         ],
         [
             "DAILY_IMPORTS",
-            26.0
+            27.446191245489914
         ],
         [
             "MORTALITY_RATE",
-            0.0085
+            0.004999999999999999
+        ],
+        [
+            "REOPEN_DATE",
+            "2020-05-11"
+        ],
+        [
+            "REOPEN_SHIFT_DAYS",
+            0.23539311754406897
+        ],
+        [
+            "REOPEN_R",
+            1.2860358535405303
+        ],
+        [
+            "REOPEN_INFLECTION",
+            0.24384688513935887
+        ],
+        [
+            "POST_REOPEN_EQUILIBRIUM_R",
+            1.0138618232867977
+        ],
+        [
+            "FALL_R_MULTIPLIER",
+            1.0009273141093864
+        ]
+    ],
+    "median_params": [
+        [
+            "INITIAL_R_0",
+            1.5999999999999999
+        ],
+        [
+            "LOCKDOWN_R_0",
+            1.0
+        ],
+        [
+            "INFLECTION_DAY",
+            "2020-04-04"
+        ],
+        [
+            "RATE_OF_INFLECTION",
+            0.30024654686234203
+        ],
+        [
+            "LOCKDOWN_FATIGUE",
+            1.0
+        ],
+        [
+            "DAILY_IMPORTS",
+            27.0
+        ],
+        [
+            "MORTALITY_RATE",
+            0.005
         ],
         [
             "REOPEN_DATE",
@@ -303,11 +303,11 @@
         ],
         [
             "POST_REOPEN_EQUILIBRIUM_R",
-            1.022351894787442
+            1.0139047534213361
         ],
         [
             "FALL_R_MULTIPLIER",
-            1.0022117956851335
+            1.0009932175478573
         ]
     ],
     "num_params": 10800,
@@ -319,19 +319,19 @@
     "top10_params": [
         [
             "INITIAL_R_0",
-            1.3599999999999999
+            1.6199999999999997
         ],
         [
             "LOCKDOWN_R_0",
-            1.0200000000000002
+            1.0450000000000004
         ],
         [
             "INFLECTION_DAY",
-            "2020-04-05"
+            "2020-04-02"
         ],
         [
             "RATE_OF_INFLECTION",
-            0.28290316052531883
+            0.2936242636048458
         ],
         [
             "LOCKDOWN_FATIGUE",
@@ -339,11 +339,11 @@
         ],
         [
             "DAILY_IMPORTS",
-            27.5
+            26.5
         ],
         [
             "MORTALITY_RATE",
-            0.0085
+            0.005000000000000001
         ],
         [
             "REOPEN_DATE",
@@ -351,29 +351,29 @@
         ],
         [
             "REOPEN_SHIFT_DAYS",
-            1.0000000000000002
+            2.2
         ],
         [
             "REOPEN_R",
-            1.2400000000000004
+            1.2000000000000004
         ],
         [
             "REOPEN_INFLECTION",
-            0.25000000000000006
+            0.20000000000000007
         ],
         [
             "POST_REOPEN_EQUILIBRIUM_R",
-            1.0524685586496865
+            1.029262486341345
         ],
         [
             "FALL_R_MULTIPLIER",
-            1.0021817993348316
+            1.0003248545661112
         ]
     ],
     "top_params": [
         [
             "INITIAL_R_0",
-            1.4
+            1.5999999999999999
         ],
         [
             "LOCKDOWN_R_0",
@@ -381,11 +381,11 @@
         ],
         [
             "INFLECTION_DAY",
-            "2020-04-07"
+            "2020-04-01"
         ],
         [
             "RATE_OF_INFLECTION",
-            0.2407648243884887
+            0.3602224917977246
         ],
         [
             "LOCKDOWN_FATIGUE",
@@ -393,11 +393,11 @@
         ],
         [
             "DAILY_IMPORTS",
-            21
+            28
         ],
         [
             "MORTALITY_RATE",
-            0.0085
+            0.005
         ],
         [
             "REOPEN_DATE",
@@ -405,7 +405,7 @@
         ],
         [
             "REOPEN_SHIFT_DAYS",
-            1
+            5
         ],
         [
             "REOPEN_R",
@@ -417,11 +417,11 @@
         ],
         [
             "POST_REOPEN_EQUILIBRIUM_R",
-            1.01849858696602
+            1.0273711435648454
         ],
         [
             "FALL_R_MULTIPLIER",
-            1.0025572501024254
+            1.0016130812769113
         ]
     ]
 }

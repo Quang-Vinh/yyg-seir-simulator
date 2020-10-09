@@ -1,7 +1,7 @@
 {
     "country": "Belarus",
-    "current_r": 1.041967424418255,
-    "date": "2020-10-04",
+    "current_r": 0.994082162561493,
+    "date": "2020-09-07",
     "first_date": "2020-03-07",
     "fixed_params": [
         [
@@ -205,11 +205,11 @@
     "mean_params": [
         [
             "INITIAL_R_0",
-            1.628372936917482
+            1.6079641835307912
         ],
         [
             "LOCKDOWN_R_0",
-            0.9907524685302124
+            0.969427425387907
         ],
         [
             "INFLECTION_DAY",
@@ -217,7 +217,7 @@
         ],
         [
             "RATE_OF_INFLECTION",
-            0.3050262400492938
+            0.30130523596183667
         ],
         [
             "LOCKDOWN_FATIGUE",
@@ -225,7 +225,7 @@
         ],
         [
             "DAILY_IMPORTS",
-            83.4587412202752
+            87.11803593245486
         ],
         [
             "MORTALITY_RATE",
@@ -237,23 +237,23 @@
         ],
         [
             "REOPEN_SHIFT_DAYS",
-            0.09631321450729875
+            0.034762455527298945
         ],
         [
             "REOPEN_R",
-            1.0681594734969209
+            1.0809832102443406
         ],
         [
             "REOPEN_INFLECTION",
-            0.3061891030446689
+            0.30358997740242755
         ],
         [
             "POST_REOPEN_EQUILIBRIUM_R",
-            1.0216899534197261
+            1.0076034297265968
         ],
         [
             "FALL_R_MULTIPLIER",
-            1.001030906831303
+            1.0010561058089054
         ]
     ],
     "median_params": [
@@ -263,7 +263,7 @@
         ],
         [
             "LOCKDOWN_R_0",
-            1.0
+            0.9500000000000001
         ],
         [
             "INFLECTION_DAY",
@@ -271,7 +271,7 @@
         ],
         [
             "RATE_OF_INFLECTION",
-            0.3055439510499173
+            0.30472665430513785
         ],
         [
             "LOCKDOWN_FATIGUE",
@@ -279,7 +279,7 @@
         ],
         [
             "DAILY_IMPORTS",
-            83.0
+            85.0
         ],
         [
             "MORTALITY_RATE",
@@ -303,11 +303,11 @@
         ],
         [
             "POST_REOPEN_EQUILIBRIUM_R",
-            1.0234626297713973
+            1.0100511145366693
         ],
         [
             "FALL_R_MULTIPLIER",
-            1.0010322702674879
+            1.000965356068924
         ]
     ],
     "num_params": 5400,
@@ -319,61 +319,7 @@
     "top10_params": [
         [
             "INITIAL_R_0",
-            1.7599999999999998
-        ],
-        [
-            "LOCKDOWN_R_0",
-            0.96
-        ],
-        [
-            "INFLECTION_DAY",
-            "2020-04-05"
-        ],
-        [
-            "RATE_OF_INFLECTION",
-            0.3098116799287548
-        ],
-        [
-            "LOCKDOWN_FATIGUE",
-            1.0
-        ],
-        [
-            "DAILY_IMPORTS",
-            86.3
-        ],
-        [
-            "MORTALITY_RATE",
-            0.0075
-        ],
-        [
-            "REOPEN_DATE",
-            "2020-05-25"
-        ],
-        [
-            "REOPEN_SHIFT_DAYS",
-            2.5
-        ],
-        [
-            "REOPEN_R",
-            1.08
-        ],
-        [
-            "REOPEN_INFLECTION",
-            0.31
-        ],
-        [
-            "POST_REOPEN_EQUILIBRIUM_R",
-            1.0216540108862913
-        ],
-        [
-            "FALL_R_MULTIPLIER",
-            1.0010201832714594
-        ]
-    ],
-    "top_params": [
-        [
-            "INITIAL_R_0",
-            1.9999999999999998
+            1.7799999999999998
         ],
         [
             "LOCKDOWN_R_0",
@@ -381,11 +327,11 @@
         ],
         [
             "INFLECTION_DAY",
-            "2020-04-01"
+            "2020-04-03"
         ],
         [
             "RATE_OF_INFLECTION",
-            0.31090602938666334
+            0.3003204397187901
         ],
         [
             "LOCKDOWN_FATIGUE",
@@ -393,7 +339,7 @@
         ],
         [
             "DAILY_IMPORTS",
-            90
+            97.1
         ],
         [
             "MORTALITY_RATE",
@@ -405,7 +351,7 @@
         ],
         [
             "REOPEN_SHIFT_DAYS",
-            -5
+            1.5
         ],
         [
             "REOPEN_R",
@@ -413,15 +359,69 @@
         ],
         [
             "REOPEN_INFLECTION",
-            0.35
+            0.3
         ],
         [
             "POST_REOPEN_EQUILIBRIUM_R",
-            1.0174263439864657
+            1.0050455045231323
         ],
         [
             "FALL_R_MULTIPLIER",
-            1.0029947871862948
+            1.0009945802898976
+        ]
+    ],
+    "top_params": [
+        [
+            "INITIAL_R_0",
+            1.5999999999999999
+        ],
+        [
+            "LOCKDOWN_R_0",
+            0.9500000000000001
+        ],
+        [
+            "INFLECTION_DAY",
+            "2020-04-03"
+        ],
+        [
+            "RATE_OF_INFLECTION",
+            0.3188233207588561
+        ],
+        [
+            "LOCKDOWN_FATIGUE",
+            1.0
+        ],
+        [
+            "DAILY_IMPORTS",
+            121
+        ],
+        [
+            "MORTALITY_RATE",
+            0.0075
+        ],
+        [
+            "REOPEN_DATE",
+            "2020-05-25"
+        ],
+        [
+            "REOPEN_SHIFT_DAYS",
+            5
+        ],
+        [
+            "REOPEN_R",
+            1.1
+        ],
+        [
+            "REOPEN_INFLECTION",
+            0.25
+        ],
+        [
+            "POST_REOPEN_EQUILIBRIUM_R",
+            1.0410945911979859
+        ],
+        [
+            "FALL_R_MULTIPLIER",
+            1.002463118681742
         ]
     ]
 }

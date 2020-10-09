@@ -141,7 +141,7 @@ class RegionModel:
 
         We cap the post-reopen R value to prevent exponential growth skewing estimates.
         """
-        if self.LOCKDOWN_R_0 < 1 and self.country_str not in NO_LOCKDOWN_COUNTRIES:
+        if self.LOCKDOWN_R_0 < 1:
             return max(self.LOCKDOWN_R_0, self.REOPEN_R)
         return self.REOPEN_R
 
@@ -171,19 +171,25 @@ class RegionModel:
         if hasattr(self, 'POST_REOPEN_EQUILIBRIUM_R') and \
                 not np.isnan(self.POST_REOPEN_EQUILIBRIUM_R):
             post_reopen_equilibrium_r = self.POST_REOPEN_EQUILIBRIUM_R
-            mode = None
-
-        if self.country_str in ['Egypt', 'Malaysia', 'Pakistan'] + EUROPEAN_COUNTRIES or \
-                (self.country_str == 'US' and self.region_str in ['WI']):
-            # Use post_reopen_equilibrium_r (override reopen_r)
-            self.use_min_reopen_equilibrium_r = False
         else:
-            # Use min(reopen_r, post_reopen_equilibrium_r)
-            self.use_min_reopen_equilibrium_r = True
+            if self.country_str == 'US':
+                if self.region_str in ['AZ', 'FL', 'OH', 'HI']:
+                    low, mode, high = 0.85, 0.95, 1.05
+                elif self.REOPEN_R < 1.1:
+                    low, mode, high = 0.85, 0.95, 1.05 # mean is 0.95
+                else:
+                    low, mode, high = 0.9, 1, 1.1 # mean is 1
+            else:
+                if self.country_str in ['Brazil', 'Mexico']:
+                    low, mode, high = 1, 1.1, 1.2
+                elif self.country_str in ['Australia']:
+                    low, mode, high = 0.8, 0.9, 1 # mean is 0.9
+                else:
+                    low, mode, high = 0.85, 1, 1.15 # mean is 1
+            post_reopen_equilibrium_r = np.random.triangular(low, mode, high)
 
         assert 0 < post_reopen_equilibrium_r < 10, post_reopen_equilibrium_r
         self.post_reopen_equilibrium_r = post_reopen_equilibrium_r
-        self.post_reopen_mode = mode
 
     def set_fall_r_multiplier(self):
         """Calculate and set the fall R multiplier.
@@ -194,6 +200,11 @@ class RegionModel:
 
         if hasattr(self, 'FALL_R_MULTIPLIER') and not np.isnan(self.FALL_R_MULTIPLIER):
             fall_r_multiplier = self.FALL_R_MULTIPLIER
+        elif not self.has_us_seasonality():
+            fall_r_multiplier = 1
+        else:
+            low, mode, high = 0.997, 1.001, 1.005 # mean is 1.001
+            fall_r_multiplier = np.random.triangular(low, mode, high)
 
         self.fall_r_multiplier = fall_r_multiplier
 
@@ -243,10 +254,6 @@ class RegionModel:
         """
 
         reopen_r = self.get_reopen_r()
-        if self.use_min_reopen_equilibrium_r:
-            post_reopen_r = min(reopen_r, self.post_reopen_equilibrium_r)
-        else:
-            post_reopen_r = self.post_reopen_equilibrium_r
         assert 0.5 <= self.LOCKDOWN_FATIGUE <= 1.5, self.LOCKDOWN_FATIGUE
 
         reopen_date_shift = self.REOPEN_DATE + \
@@ -260,13 +267,7 @@ class RegionModel:
         assert 10 <= days_until_post_reopen <= 80, days_until_post_reopen
         post_reopen_midpoint_idx = reopen_idx + days_until_post_reopen
         post_reopen_idx = reopen_idx + days_until_post_reopen * 2
-
-        if self.country_str == 'US' or (self.country_str in EUROPEAN_COUNTRIES and \
-                self.post_reopen_mode and self.post_reopen_mode < 1):
-            post_reopen_days_shift = 60 if (self.post_reopen_mode and self.post_reopen_mode <= 0.95) else 45
-        else:
-            post_reopen_days_shift = 30
-        fall_start_idx = self.get_day_idx_from_date(FALL_START_DATE_NORTH) - post_reopen_days_shift
+        fall_start_idx = self.get_day_idx_from_date(FALL_START_DATE_NORTH) - 30
 
         sig_lockdown = get_transition_sigmoid(
             self.inflection_day_idx, self.rate_of_inflection, self.INITIAL_R_0, self.LOCKDOWN_R_0)
@@ -275,7 +276,7 @@ class RegionModel:
         sig_reopen = get_transition_sigmoid(
             reopen_idx, self.REOPEN_INFLECTION, self.LOCKDOWN_R_0 * self.LOCKDOWN_FATIGUE, reopen_r)
         sig_post_reopen = get_transition_sigmoid(
-            post_reopen_idx, self.REOPEN_INFLECTION, reopen_r, post_reopen_r)
+            post_reopen_idx, self.REOPEN_INFLECTION, reopen_r, min(reopen_r, self.post_reopen_equilibrium_r))
 
         dates = utils.date_range(self.first_date, self.projection_end_date)
         assert len(dates) == self.N
@@ -293,7 +294,7 @@ class RegionModel:
 
             if day_idx > fall_start_idx:
                 fall_r_mult = max(0.9, min(
-                    1.35, self.fall_r_multiplier**(day_idx-fall_start_idx)))
+                    1.5, self.fall_r_multiplier**(day_idx-fall_start_idx)))
                 assert 0.9 <= fall_r_mult <= 1.5, fall_r_mult
                 r_t *= fall_r_mult
 
@@ -322,18 +323,9 @@ class RegionModel:
         assert 0 < self.MORTALITY_RATE < 0.2, self.MORTALITY_RATE
 
         min_mortality_multiplier = MIN_MORTALITY_MULTIPLIER
-        mortality_multiplier = MORTALITY_MULTIPLIER
-        region_tuple_to_mortality_mult = {
-            ('US', 'CT') : (0.15, 0.99),
-            ('US', 'MA') : (0.5, mortality_multiplier),
-            ('US', 'ND') : (0.6, mortality_multiplier),
-            ('US', 'RI') : (0.4, mortality_multiplier),
-        }
-        if self.region_tuple[:2] in region_tuple_to_mortality_mult:
-            min_mortality_multiplier, mortality_multiplier = \
-                region_tuple_to_mortality_mult[self.region_tuple[:2]]
-        elif self.country_str in HIGH_INCOME_EUROPEAN_COUNTRIES:
-            min_mortality_multiplier *= 0.75
+        if self.region_tuple in [] or \
+                self.region_tuple[:2] in [('US', 'MA')]:
+            min_mortality_multiplier = 0.5
 
         ifr_arr = []
         for idx in range(self.N):
@@ -344,24 +336,15 @@ class RegionModel:
                 # slower rise in other countries, so we use 120 days
                 total_days_with_mult = max(0, idx - 120)
 
-            if self.country_str in ['Australia', 'South Africa']:
-                # Opposite seaonsality in Australia/South Africa -> use ifr mult of 1
-                ifr_mult = 1
-            elif self.country_str in EARLY_IMPACTED_COUNTRIES:
+            if self.country_str in EARLY_IMPACTED_COUNTRIES:
                 # Post-reopening has a greater reduction in the IFR
                 days_after_reopening = max(0, min(30, idx - (self.reopen_idx + DAYS_BEFORE_DEATH // 2)))
                 days_else = max(0, total_days_with_mult - days_after_reopening)
 
                 ifr_mult = max(min_mortality_multiplier,
-                    mortality_multiplier**days_else * MORTALITY_MULTIPLIER_US_REOPEN**days_after_reopening)
-
-                post_reopen_days_shift = 30 if self.country_str == 'US' else 0
-                fall_start_idx = self.get_day_idx_from_date(FALL_START_DATE_NORTH) - post_reopen_days_shift
-                if idx > fall_start_idx:
-                    # Increase IFR starting in fall due to seasonality
-                    ifr_mult *= 1.002**(idx - fall_start_idx)
+                    MORTALITY_MULTIPLIER**days_else * MORTALITY_MULTIPLIER_US_REOPEN**days_after_reopening)
             else:
-                ifr_mult = max(min_mortality_multiplier, mortality_multiplier**total_days_with_mult)
+                ifr_mult = max(min_mortality_multiplier, MORTALITY_MULTIPLIER**total_days_with_mult)
             assert 0 < min_mortality_multiplier < 1, min_mortality_multiplier
             assert min_mortality_multiplier <= ifr_mult <= 1, ifr_mult
             ifr = max(MIN_IFR, self.MORTALITY_RATE * ifr_mult)
@@ -394,13 +377,13 @@ class RegionModel:
         if self.country_str in HIGH_INCOME_COUNTRIES:
             days_until_min_undetected = 60
             min_undetected = 0.05
-        elif self.country_str in ['Ecuador', 'India', 'Pakistan', 'South Africa']:
+        elif self.country_str in ['Ecuador', 'India', 'Pakistan']:
             days_until_min_undetected = 120
             min_undetected = 0.5
-        elif self.country_str in ['Bolivia', 'Indonesia', 'Peru', 'Russia', 'Belarus']:
+        elif self.country_str in ['Indonesia', 'Peru', 'South Africa']:
             days_until_min_undetected = 120
             min_undetected = 0.25
-        elif self.country_str in ['Brazil', 'Mexico']:
+        elif self.country_str in ['Brazil', 'Mexico', 'Russia']:
             days_until_min_undetected = 120
             min_undetected = 0.2
         else:
