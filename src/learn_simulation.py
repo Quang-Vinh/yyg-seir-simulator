@@ -7,11 +7,11 @@ For help: `python run_simulation.py --help`
 """
 
 import argparse
+import csv
 import datetime
 import glob
 import json
 import os
-from os import curdir
 from pathlib import Path
 import time
 import matplotlib.pyplot as plt
@@ -236,11 +236,12 @@ def main(args):
         print("Parameters:")
         for param_name, param_value in params_dict.items():
             print(f"{param_name:<25s} : {param_value}")
-    import csv
 
     real_death = []
     real_death_all = []
-    with open(current_path / "../data/mortality_timeseries_prov.csv", "r") as csvfile:
+    with open(
+        current_path / "../data/timeseries_prov/mortality_timeseries_prov.csv", "r"
+    ) as csvfile:
         #        reader = csv.reader(csvfile)
         reader = csv.DictReader(csvfile)
         for row in reader:
