@@ -6,8 +6,10 @@ Learn more at: https://github.com/youyanggu/yyg-seir-simulator. Developed by You
 import datetime
 
 import numpy as np
+import pandas as pd
 
 from fixed_params import *
+from region_model import RegionModel
 
 
 def get_daily_imports(region_model, i):
@@ -153,3 +155,41 @@ def run(region_model):
 
     return dates, infections, hospitalizations, reported_deaths
 
+
+def predict(region_model: RegionModel, mortality_data: pd.DataFrame) -> pd.DataFrame:
+    '''
+    Runs SEIR simulator and produces predictions given a region model
+
+    Args:
+        region_model (RegionModel): Region model instance with initialized parameters
+        mortality_data (pd.DataFrame): Dataframe of mortality data for given region
+
+    Returns:
+        pd.DataFrame: Data frame which includes death forecasts
+    '''
+    # Run SEIR simulation and create dataframe of predictions
+    dates, infections, hospitalizations, deaths = run(region_model)
+    cumulative_deaths_pred = deaths.cumsum()
+    mortality_pred = pd.DataFrame(
+        {
+            "date_death_report": dates,
+            "infections_pred": infections,
+            "hospitalizations_pred": hospitalizations,
+            "cumulative_deaths_pred": cumulative_deaths_pred,
+        }
+    )
+
+    # Cut off 22 days before first death reports
+    start_date = mortality_data["date_death_report"].min()
+    mortality_pred = mortality_pred.query("date_death_report >= @start_date")
+
+    # Combine predictions with actual data
+    mortality_pred = mortality_pred.merge(
+        mortality_data, how="left", on="date_death_report"
+    )
+    mortality_pred.loc[:, "province"] = mortality_data.iloc[0]["province"]
+
+    # Add flag to check if date is a forecast of not
+    mortality_pred["is_forecast"] = mortality_pred["cumulative_deaths"].isnull()
+
+    return mortality_pred
