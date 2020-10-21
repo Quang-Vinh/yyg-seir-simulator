@@ -44,12 +44,13 @@ def add_space_region(region):
         return region
 
 
-def plot_predictions(mortality_pred: pd.DataFrame):
+def plot_predictions(mortality_pred: pd.DataFrame, title: str = ""):
     """
     Creates a time series plotly plot of the actual and predicted cumulative deaths.
 
     Args:
         mortality_pred (pd.DataFrame): Dataframe containing actual and predicted mortalities.
+        title (str): Title of plot. Defaults to ''
 
     Returns:
         [go.Figure]: Plotly figure
@@ -57,7 +58,7 @@ def plot_predictions(mortality_pred: pd.DataFrame):
 
     # Set figure layout
     layout = go.Layout(
-        title="COVID-19 mortality in Ontario, Canada",
+        title=title,
         xaxis=dict(title="Date"),
         yaxis=dict(title="Cumulative Deaths"),
         height=600,

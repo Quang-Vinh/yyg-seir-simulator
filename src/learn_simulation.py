@@ -16,6 +16,7 @@ from pathlib import Path
 import time
 import matplotlib.pyplot as plt
 import numpy as np
+from typing import Tuple
 
 from region_model import RegionModel
 from simulation import run
@@ -101,6 +102,27 @@ def convert_mean_params_to_params_dict(mean_params):
             params_dict[param_name] = param_value_raw
 
     return params_dict
+
+
+def load_best_params_province(province: str) -> Tuple[dict, dict]:
+    """
+    Load best parameters for given province in Canada
+
+    Args:
+        province (str): Province name
+
+    Returns:
+        Tuple[dict, dict]: Region parameters and Model parameters dictionaries
+    """
+    best_params_dir = "../best_params/latest"
+    best_params_type = "mean"
+
+    best_params = load_best_params_from_file(best_params_dir, "Canada", "ALL", province)
+    region_params = {"population": best_params["population"]}
+    params_type_name = f"{best_params_type}_params"
+    params_dict = convert_mean_params_to_params_dict(best_params[params_type_name])
+
+    return region_params, params_dict
 
 
 def convert_str_value_to_correct_type(param_value, old_value, use_timedelta=False):
